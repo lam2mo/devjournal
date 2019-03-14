@@ -1,0 +1,16 @@
+#!/bin/bash
+
+APPPATH=`pwd`
+
+CLASSPATH=
+for j in $APPPATH/dist/*.jar
+do
+    CLASSPATH=${j}:${CLASSPATH}
+done
+for j in $APPPATH/lib/*.jar
+do
+    CLASSPATH=${j}:${CLASSPATH}
+done
+
+cd $APPPATH && java -cp ${CLASSPATH} App $@
+

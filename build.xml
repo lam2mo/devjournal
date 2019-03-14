@@ -1,0 +1,43 @@
+<project name="DevJournal" default="dist" basedir=".">
+    <description>
+        DevJournal: lightweight project logging
+    </description>
+    <property name="project.name" value="devjournal"/>
+    <property name="project.version" value="1.0.0"/>
+    <property name="launchscript" value="devjournal"/>
+    <property name="src" location="src"/>
+    <property name="lib" location="lib"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${build}"/>
+    </target>
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${build}" debug="true">
+            <classpath>
+                <pathelement path="${classpath}"/>
+                <pathelement location="${lib}/java-diff-utils-1.2.jar"/>
+            </classpath>
+        </javac>
+    </target>
+    <target name="dist" depends="compile">
+        <mkdir dir="${dist}/"/>
+        <jar jarfile="${dist}/${project.name}.jar" basedir="${build}"/>
+        <tar destfile="${dist}/${project.name}-${project.version}.tar.gz" compression="gzip">
+            <tarfileset dir="." prefix="${project.name}-${project.version}" filemode="755">
+                <include name="${launchscript}"/>
+            </tarfileset>
+            <tarfileset dir="." prefix="${project.name}-${project.version}">
+                <include name="*/*.jar"/>
+                <include name="LICENSE"/>
+                <include name="doc/*"/>
+            </tarfileset>
+        </tar>
+    </target>
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+</project>
+
